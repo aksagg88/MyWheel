@@ -2,11 +2,11 @@ package com.Agtek.mywheel;
 
 import com.Agtek.mywheel.R;
 
-
 import kankan.wheel.widget.OnWheelChangedListener;
 import kankan.wheel.widget.OnWheelScrollListener;
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.AbstractWheelTextAdapter;
+import kankan.wheel.widget.adapters.ArrayWheelAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -31,13 +31,18 @@ public class MainActivityv2 extends Activity {
 		cityName = (TextView)findViewById(R.id.tvCityName);
 		workON = (ToggleButton)findViewById(R.id.tbWork);
 		
-		
+		//wheel cosmetics
 		final WheelView cities = (WheelView) findViewById(R.id.city);
 		cities.setVisibleItems(5); // Number of items
 		cities.setWheelBackground(R.drawable.wheel_bg_holo);
 		cities.setWheelForeground(R.drawable.wheel_val_holo);
 		cities.setShadowColor(0xFF000000, 0x88000000, 0x00000000);
-		cities.setViewAdapter(new CityAdapter(this));
+		//wheel data adapter
+		//old //cities.setViewAdapter(new CityAdapter(this));
+		String[] citiesList = new String[] { getCitiesList() };
+		ArrayWheelAdapter<String> CitiesAdapter = new ArrayWheelAdapter<String>(this, citiesList);
+
+		
 		cities.setCurrentItem(3);
 		
 		cities.addChangingListener(new OnWheelChangedListener() {
@@ -65,16 +70,26 @@ public class MainActivityv2 extends Activity {
 	
 	
 	
-	private class CityAdapter extends AbstractWheelTextAdapter {
+	private String getCitiesList() {
+		// TODO Auto-generated method stub
+		//add the code to retrive list of cities from the db here...
+		return null;
+	}
+
+
+
+	private class CitiesAdapter extends ArrayWheelAdapter {
+
 		// City names
-		final String cities[] = new String[] {"New York", "Washington", "Chicago", "Atlanta", "Orlando"};
+		final String cities[] = new String[100];
 
 		/**
 		 * Constructor
 		 */
-		protected CityAdapter(Context context) {
+		protected CitiesAdapter(Context context, String[] string) {
 			super(context, R.layout.city_holo_layout, NO_RESOURCE);
 			setItemTextResource(R.id.city_name);
+			this.cities = string;
 		}
 
 		@Override
